@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface PeopleRepository extends JpaRepository<Person, Integer> {
     @Query("SELECT p FROM Person p LEFT JOIN FETCH p.books WHERE p.id = :id")
     Optional<Person> findByIdWithBooks(@Param("id") int id);
+
+    Person findById(int id);
 }

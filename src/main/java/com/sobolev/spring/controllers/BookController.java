@@ -65,4 +65,16 @@ public class BookController {
         bookService.update(id, book);
         return "redirect:/books";
     }
+
+    @PatchMapping("/{id}/setLink")
+    public String setLink(@ModelAttribute("book") Book book, @PathVariable("id") int id, @RequestParam("id") int linkId) {
+        bookService.setOwner(id, linkId);
+        return "redirect:/books";
+    }
+
+    @PatchMapping("/{id}/owner")
+    public String deleteOwner(@PathVariable("id") int id) {
+        bookService.deleteLink(id);
+        return "redirect:/books";
+    }
 }
