@@ -1,6 +1,7 @@
 package com.sobolev.spring.services;
 
 import com.sobolev.spring.models.Book;
+import com.sobolev.spring.models.Person;
 import com.sobolev.spring.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class BookService {
     }
 
     public Book findById(int id){
-        return bookRepository.findById(id).orElse(null);
+        return bookRepository.findById(id);
     }
 
     @Transactional
@@ -41,5 +42,12 @@ public class BookService {
     public void update(int id, Book book) {
         book.setId(id);
         bookRepository.save(book);
+    }
+
+    public Person findOwner(int id){
+        Book book = bookRepository.findById(id);
+        System.out.println(book);
+        System.out.println(bookRepository.findById(id).getOwner());
+        return bookRepository.findById(id).getOwner();
     }
 }

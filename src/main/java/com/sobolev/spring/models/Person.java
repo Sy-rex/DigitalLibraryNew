@@ -1,6 +1,9 @@
 package com.sobolev.spring.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
 
@@ -12,13 +15,16 @@ public class Person {
     @Column(name = "id")
     private int id;
 
+    @Pattern(regexp = "^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+)?", message = "ФИО должно быть вида: Фамилия Имя Отчество")
     @Column(name = "fio")
     private String fio;
 
+    @Min(value = 1901, message = "Год рождения не может быть меньше 1901")
+    @Max(value = 2024, message = "Год рождения должен быть меньше 2025")
     @Column(name = "year_of_birth")
     private int yearOfBirth;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Book> books;
 
     public Person() {}
@@ -65,7 +71,6 @@ public class Person {
         return "Person{" +
                 "fio='" + fio + '\'' +
                 ", yearOfBirth=" + yearOfBirth +
-                ", books=" + books +
                 '}';
     }
 }

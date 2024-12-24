@@ -1,6 +1,8 @@
 package com.sobolev.spring.controllers;
 
+import com.sobolev.spring.models.Book;
 import com.sobolev.spring.models.Person;
+import com.sobolev.spring.services.BookService;
 import com.sobolev.spring.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +36,14 @@ public class PeopleController {
 
     @GetMapping("/{id}")
     public String showPerson (@PathVariable("id") int id, Model model) {
+        List<Book> books = peopleService.findByOwner(peopleService.findById(id));
+        boolean empty = false;
+        if (books.isEmpty()) {
+            empty = true;
+        }
+        model.addAttribute("book", books);
         model.addAttribute("person", peopleService.findById(id));
+        model.addAttribute("empty", empty);
         return "people/show";
     }
 

@@ -7,23 +7,23 @@
 </head>
 <body>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfFoundation()}">VALUE</p>
-<!--<div th:if="not ${book.getPersonId()}">-->
-<!--    <p>Эта книга свободна</p>-->
-<!--    <form th:method="PATCH" th:action="@{/books/{id}/setLink(id=${book.getId()})}">-->
-<!--        <label for="person">Выберите человека</label>-->
-<!--        <select th:object="${person}" th:field="*{id}" id="person">-->
-<!--            <option th:each="person: ${people}" th:value="${person.getId()}" th:text="${person.getFio()}">-->
-<!--        </select>-->
-<!--        <input type="submit" value="Назначить книгу"/>-->
-<!--    </form>-->
-<!--</div>-->
-<!--<div th:if="${book.getPersonId()}">-->
-<!--    <form th:method="PATCH" th:action="@{/books/{id}/owner(id=${book.getId()})}">-->
-<!--        <p th:text="${'Книга сейчас у: ' + pers}">VALUE</p>-->
-<!--        <br/>-->
-<!--        <input type="submit" value="Освободить книгу">-->
-<!--    </form>-->
-<!--</div>-->
+<div th:if="not ${pers}">
+    <p>Эта книга свободна</p>
+    <form th:method="PATCH" th:action="@{/books/{id}/setLink(id=${book.getId()})}">
+        <label for="person">Выберите человека</label>
+        <select th:object="${person}" th:field="*{id}" id="person">
+            <option th:each="person: ${people}" th:value="${person.getId()}" th:text="${person.getFio()}">
+        </select>
+        <input type="submit" value="Назначить книгу"/>
+    </form>
+</div>
+<div th:if="${pers}">
+    <form th:method="PATCH" th:action="@{/books/{id}/owner(id=${book.getId()})}">
+        <p th:text="${'Книга сейчас у: ' + pers.getFio()}">VALUE</p>
+        <br/>
+        <input type="submit" value="Освободить книгу">
+    </form>
+</div>
 <hr/>
 <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
     <input type="submit" value="Редактировать">

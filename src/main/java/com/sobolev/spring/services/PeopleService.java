@@ -1,7 +1,9 @@
 package com.sobolev.spring.services;
 
 import com.sobolev.spring.models.Person;
+import com.sobolev.spring.models.Book;
 import com.sobolev.spring.repositories.PeopleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +43,11 @@ public class PeopleService {
     public void updateById(int id, Person person){
         person.setId(id);
         peopleRepository.save(person);
+    }
+
+    public List<Book> findByOwner(Person owner){
+        Person personWithBooks = peopleRepository.findByIdWithBooks(owner.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Person not found"));
+        return personWithBooks.getBooks();
     }
 }
