@@ -48,6 +48,12 @@ public class BookController {
         return "books/edit";
     }
 
+    @GetMapping("/search")
+    public String search(@ModelAttribute("book") Book book, Model model) {
+        model.addAttribute("book",book);
+        return "books/search";
+    }
+
     @PostMapping()
     public String createBook(@ModelAttribute("book") Book book) {
         bookService.save(book);
