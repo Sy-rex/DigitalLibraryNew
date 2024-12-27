@@ -9,19 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final PeopleRepository personRepository;
     private final PeopleRepository peopleRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository, PeopleRepository personRepository, PeopleRepository peopleRepository) {
+    public BookService(BookRepository bookRepository, PeopleRepository peopleRepository) {
         this.bookRepository = bookRepository;
-        this.personRepository = personRepository;
         this.peopleRepository = peopleRepository;
     }
 
@@ -76,5 +75,12 @@ public class BookService {
 
         bookRepository.save(book);
         peopleRepository.save(owner);
+    }
+
+    public Optional<List<Book>> findByTitle(String title) {
+        if (title == ""){
+            return Optional.empty();
+        }
+        return bookRepository.findByTitleStartingWith(title);
     }
 }

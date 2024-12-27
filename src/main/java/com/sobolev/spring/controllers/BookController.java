@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
@@ -49,8 +50,18 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public String search(@ModelAttribute("book") Book book, Model model) {
+    public String search(@ModelAttribute("book") Book book, Model model, @RequestParam(value = "title", required = false) String titleBook) {
         model.addAttribute("book",book);
+        model.addAttribute("titleBook", titleBook);
+
+        Optional<List<Book>> books =  bookService.findByTitle(titleBook);
+        if (books.isPresent() && books.get().size() > 0) {
+            model.addAttribute("isPresentBook", true);
+            model.addAttribute("books", books.get());
+        }else {
+            model.addAttribute("isPresentBook", false);
+        }
+
         return "books/search";
     }
 

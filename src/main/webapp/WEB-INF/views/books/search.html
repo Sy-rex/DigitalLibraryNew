@@ -6,6 +6,26 @@
   <title>Поиск книг</title>
 </head>
 <body>
-
+<form th:method="GET" th:action="@{/books/search}" th:object="${book}">
+<label for="name">Введите поисковой запрос:</label>
+  <input type="text" id="name" th:field="*{title}"/>
+  <br/>
+  <input type="submit" value="Искать">
+</form>
+<div th:if="${titleBook}">
+  <div th:if="not ${isPresentBook}">
+    Книг не найдено
+  </div>
+  <div th:if="${isPresentBook}" th:each="books : ${books}">
+    <p th:text="${books.getTitle() + ', ' + books.getAuthor() + ', ' + books.getYearOfFoundation()}">VALUE</p>
+    <div th:if="${books.getOwner()}">
+      <p th:text="${'Книга сейчас у: ' + books.getOwner().getFio()}">VALUE</p>
+    </div>
+    <div th:if="not ${books.getOwner()}">
+      Книга свободна
+    </div>
+    <hr/>
+  </div>
+</div>
 </body>
 </html>
