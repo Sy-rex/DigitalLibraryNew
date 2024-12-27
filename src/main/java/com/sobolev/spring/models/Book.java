@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "Book")
 public class Book {
@@ -31,12 +33,20 @@ public class Book {
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
 
+    @Column(name = "rent_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date rentAt;
+
+    @Transient
+    private boolean isOverdue;
+
     public Book() {}
 
     public Book(String title, int yearOfFoundation, Person owner) {
         this.title = title;
         this.yearOfFoundation = yearOfFoundation;
         this.owner = owner;
+        this.isOverdue = false;
     }
 
     public int getId() {
@@ -77,6 +87,22 @@ public class Book {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public Date getRentAt() {
+        return rentAt;
+    }
+
+    public void setRentAt(Date rentAt) {
+        this.rentAt = rentAt;
+    }
+
+    public boolean getIsOverdue() {
+        return isOverdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        isOverdue = overdue;
     }
 
     @Override

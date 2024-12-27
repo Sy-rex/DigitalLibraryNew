@@ -14,7 +14,7 @@
 <div th:if="not ${empty}">
     <H3>Книги:</H3>
     <div th:each="book: ${book}">
-        <p th:text="${book.getTitle()} + ', '+ ${book.getAuthor()} + ', ' + ${book.getYearOfFoundation()}">VALUE</p>
+        <p th:text="${book.getTitle()} + ', '+ ${book.getAuthor()} + ', ' + ${book.getYearOfFoundation()}" th:style="${book.getIsOverdue()}? 'color:red'">VALUE</p>
     </div>
 </div>
 <form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}">

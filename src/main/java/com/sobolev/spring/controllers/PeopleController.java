@@ -41,6 +41,7 @@ public class PeopleController {
         if (books.isEmpty()) {
             empty = true;
         }
+        peopleService.checkOverdue(books);
         model.addAttribute("book", books);
         model.addAttribute("person", peopleService.findById(id));
         model.addAttribute("empty", empty);

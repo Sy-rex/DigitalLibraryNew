@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,5 +50,17 @@ public class PeopleService {
         Person personWithBooks = peopleRepository.findByIdWithBooks(owner.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Person not found"));
         return personWithBooks.getBooks();
+    }
+
+    public void checkOverdue(List<Book> books){
+        Date currentDate = new Date();
+        final long tenDaysInMillis = 10L * 60 * 60 * 24 * 1000; // 10 days in ms
+        for (Book book : books){
+            if (book.getRentAt() != null) {
+                if((currentDate.getTime() - book.getRentAt().getTime()) > tenDaysInMillis){
+                    book.setOverdue(true);
+                }
+            }
+        }
     }
 }
