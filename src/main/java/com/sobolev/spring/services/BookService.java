@@ -5,6 +5,8 @@ import com.sobolev.spring.models.Person;
 import com.sobolev.spring.repositories.BookRepository;
 import com.sobolev.spring.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,21 @@ public class BookService {
 
     public List<Book> index() {
         return bookRepository.findAll();
+    }
+
+    public List<Book> index(boolean sortByYear) {
+        if (sortByYear) {
+            return bookRepository.findAll(Sort.by("yearOfFoundation"));
+        }
+        return bookRepository.findAll();
+    }
+
+    public List<Book> index(int page, int booksPerPage) {
+        return bookRepository.findAll(PageRequest.of(page,booksPerPage)).getContent();
+    }
+
+    public List<Book> index(int page, int booksPerPage, boolean sortByYear) {
+        return bookRepository.findAll(PageRequest.of(page,booksPerPage, Sort.by("yearOfFoundation"))).getContent();
     }
 
     @Transactional
